@@ -30,4 +30,8 @@ So, if something is wrong, just stop and restart your notebook server in `Contro
 
 ## Notice of Shutdown
 
-[jupyter.nims.re.kr](https://jupyter.nims.re.kr) will reboot regularly once a week (1:00am to 4:00am on Monday) for package management. At this point, all user calculations are stopped and all environments are initialized. In particular, the data of users outside the `~/work` folder will be lost.
+[jupyter.nims.re.kr](https://jupyter.nims.re.kr) will reboot regularly once a week (1:00am to 4:00am on Monday) for package management.
+
+At this point, all user calculations are stopped and all environments are initialized.
+
+In particular, the data of users outside the `~/work` folder will be lost.

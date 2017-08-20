@@ -7,11 +7,11 @@ This project is supported by [NIMS](https://www.nims.re.kr).
 ## What it Gives You
 
 * Everything in [Data Science Notebook](https://github.com/jupyter/docker-stacks/tree/master/datascience-notebook)
-* IRuby (from `docker-demo-images`)
+* IRuby (from [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks))
 * Tensorflow (without GPU support)
 * jupyter C kernel
 * Octave kernel
-* [Sagemath](http://www.sagemath.org)
+* [SageMath](http://www.sagemath.org)
 * JupyterLab
 
 **Python 2.x was removed** from all [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) images on August 10th, 2017.

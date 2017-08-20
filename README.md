@@ -14,4 +14,4 @@ This project is supported by [NIMS](https://www.nims.re.kr).
 * [Sagemath](http://www.sagemath.org)
 * JupyterLab
 
-**Python 2.x was removed from all [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) images on August 10th, 2017**
+**Python 2.x was removed** from all [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks) images on August 10th, 2017.

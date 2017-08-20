@@ -1,0 +1,12 @@
+{% extends "templates/404.html" %}
+{% block headercontainer %}
+<span id="site_logo_widget" class="pull-right" style="margin-right: 10px;">
+  <a style="text-decoration: none; color:black; vertical-align:middle;" href="https://github.com/jupyternims/docker-image" target="_blank">
+    <span style="margin-left: 5px; margin-right: 5px; vertical-align:bottom;">
+      {% if notebook_name %}on{% else %}Hosted by {% endif %}
+    </span>
+    <img src="/hub/static/images/nimssymbol.png" style="margin-top: -1px; margin-bottom: -1px; width: 32px; height: 32px;"/>
+  </a>
+</span>
+{{ super() }}
+{% endblock %}

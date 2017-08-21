@@ -1,7 +1,7 @@
+
 # Docker demo image, as used on try.jupyter.org and tmpnb.org
 
 FROM jupyter/datascience-notebook:8f56e3c47fec
-#FROM jupyter/all-spark-notebook:8e15d329f1e9
 
 MAINTAINER Byung Chun Kim <wizardbc@gmail.com>
 
@@ -139,7 +139,7 @@ RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/$NB_US
 # so that later, smaller file changes do not cause a complete recopy during 
 # build
 COPY notebooks/ /home/$NB_USER/work/
-COPY datasets/ /home/$NB_USER/work/datasets/
+#COPY datasets/ /home/$NB_USER/work/datasets/
 
 # Switch back to root for permission fixes, conversions, and trust. Make sure
 # trust is done as $NB_USER so that the signing secret winds up in the $NB_USER

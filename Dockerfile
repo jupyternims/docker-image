@@ -7,7 +7,7 @@ MAINTAINER Byung Chun Kim <wizardbc@gmail.com>
 
 USER root
 
-RUN sed -i 's%archive.ubuntu.com%ftp.daumkakao.com%' /etc/apt/sources.list
+#RUN sed -i 's%archive.ubuntu.com%ftp.daumkakao.com%' /etc/apt/sources.list
 
 RUN apt-get update \
  && apt-get -y dist-upgrade --no-install-recommends \
@@ -72,11 +72,13 @@ RUN conda install --quiet --yes -c conda-forge tensorflow
 #RUN conda install --quiet --yes -n python2 -c conda-forge tensorflow
 RUN conda install --quiet --yes -c conda-forge jupyter_contrib_nbextensions
 # C
-USER root
+RUN pip install --user --no-cache-dir jupyter-c-kernel && \
+    ~/.local/bin/install_c_kernel --user
+    
 RUN wget -O - https://raw.githubusercontent.com/brendan-rius/jupyter-c-kernel/master/install.sh | sh
 # Octave Kernel
 # From arnau/docker-octave-notebook
-
+USER root
 RUN apt-get update \
  && apt-get install -y octave liboctave-dev \
  && apt-get autoclean \
@@ -102,13 +104,13 @@ RUN pip install octave_kernel \
 
 USER root
 ENV SAGE_VER 8.0
-ENV SAGE_BIN_FILE sage-$SAGE_VER-Debian_GNU_Linux_8-x86_64.tar.bz2
+ENV SAGE_BIN_FILE sage-$SAGE_VER-Ubuntu_16.04-x86_64.tar.bz2
 ENV SAGE_ROOT /opt/sage/$SAGE_VER
 RUN mkdir -p $SAGE_ROOT && chown $NB_USER:users $SAGE_ROOT
 
 USER $NB_USER
 WORKDIR $SAGE_ROOT
-RUN wget -nv https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/$SAGE_BIN_FILE && \
+RUN wget -nv http://mirrors.mit.edu/sage/linux/64bit/$SAGE_BIN_FILE && \
     tar -xjvf $SAGE_BIN_FILE --strip-components=1 && \
     rm $SAGE_BIN_FILE
 

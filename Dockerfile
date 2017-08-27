@@ -18,21 +18,20 @@ RUN apt-get update \
 USER $NB_USER
 RUN git config --global url."https://".insteadOf git://
 
+# From jupyter/docker-demo-images
 # Install system libraries first as root
 USER root
 
-# !!! Haskell does not work !!!
 # The Glorious Glasgow Haskell Compiler
-#RUN apt-get update && \
-#    apt-get install -y --no-install-recommends software-properties-common && \
-#    add-apt-repository -y ppa:hvr/ghc && \
-#    sed -i s/jessie/trusty/g /etc/apt/sources.list.d/hvr-ghc-jessie.list && \
-#    apt-get update && \
-#    apt-get install -y cabal-install-1.22 ghc-7.8.4 happy-1.19.4 alex-3.1.3 && \
-#    apt-get clean
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends software-properties-common && \
+    add-apt-repository -y ppa:hvr/ghc && \
+    sed -i s/jessie/trusty/g /etc/apt/sources.list.d/hvr-ghc-jessie.list && \
+    apt-get update && \
+    apt-get install -y cabal-install-1.22 ghc-7.8.4 happy-1.19.4 alex-3.1.3 && \
+    apt-get clean
 
 # IHaskell dependencies
-RUN apt-get update
 RUN apt-get install -y --no-install-recommends zlib1g-dev libzmq3-dev libtinfo-dev libcairo2-dev libpango1.0-dev && apt-get clean
 
 # Ruby dependencies
@@ -46,35 +45,30 @@ RUN gem update --system --no-document && \
 # Now switch to $NB_USER for all conda and other package manager installs
 USER $NB_USER
 
-# !!! Haskell does not work !!!
-#ENV PATH /home/$NB_USER/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH
+ENV PATH /home/$NB_USER/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH
 
 # IRuby
 RUN iruby register
 
-# !!! Haskell does not work !!!
 # IHaskell + IHaskell-Widgets + Dependencies for examples
-#RUN cabal update && \
-#    CURL_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt' curl 'https://www.stackage.org/lts-2.22/cabal.config?global=true' >> ~/.cabal/config && \
-#    cabal install cpphs && \
-#    cabal install gtk2hs-buildtools && \
-#    cabal install ihaskell-0.8.0.0 --reorder-goals && \
-#    cabal install ihaskell-widgets-0.2.2.1 HTTP Chart Chart-cairo && \
-#    ihaskell install && \
-#    rm -fr $(echo ~/.cabal/bin/* | grep -iv ihaskell) ~/.cabal/packages ~/.cabal/share/doc ~/.cabal/setup-exe-cache ~/.cabal/logs
+RUN cabal update && \
+    CURL_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt' curl 'https://www.stackage.org/lts-2.22/cabal.config?global=true' >> ~/.cabal/config && \
+    cabal install cpphs && \
+    cabal install gtk2hs-buildtools && \
+    cabal install ihaskell-0.8.4.0 --reorder-goals && \
+    cabal install \
+        # ihaskell-widgets-0.2.3.1 \ temporarily disabled because installation fails
+        HTTP Chart Chart-cairo && \
+    ihaskell install && \
+    rm -fr $(echo ~/.cabal/bin/* | grep -iv ihaskell) ~/.cabal/packages ~/.cabal/share/doc ~/.cabal/setup-exe-cache ~/.cabal/logs
 
 # Extra Kernels
-# Bash
-#RUN pip install --user --no-cache-dir bash_kernel && \
-#    python -m bash_kernel.install
 # Tensorflow
 RUN conda install --quiet --yes -c conda-forge tensorflow
-#RUN conda install --quiet --yes -n python2 -c conda-forge tensorflow
 RUN conda install --quiet --yes -c conda-forge jupyter_contrib_nbextensions
 # C
 RUN pip install --user --no-cache-dir jupyter-c-kernel && \
     ~/.local/bin/install_c_kernel --user
-    
 RUN wget -O - https://raw.githubusercontent.com/brendan-rius/jupyter-c-kernel/master/install.sh | sh
 # Octave Kernel
 # From arnau/docker-octave-notebook
@@ -91,13 +85,6 @@ USER $NB_USER
 RUN pip install octave_kernel \
  && python -m octave_kernel.install \
  && conda install -y ipywidgets
-
-
-# !!! Haskell does not work !!!
-#RUN git clone --depth 1 https://github.com/gibiansky/IHaskell.git /home/$NB_USER/work/IHaskell/ && \
-#    mv /home/$NB_USER/work/IHaskell/ihaskell-display/ihaskell-widgets/Examples /home/$NB_USER/work/featured/ihaskell-widgets && \
-#    rm -r /home/$NB_USER/work/IHaskell
-
 
 
 ### Install Sage
@@ -137,11 +124,6 @@ ADD ./add_sage/backend_ipython.py $SAGE_ROOT/local/lib/python2.7/site-packages/s
 # JupyterLab
 RUN conda remove --quiet --yes --force 'jupyterlab'
 RUN conda install --quiet --yes -c conda-forge jupyterlab && conda clean -tipsy
-
-# Add the templates
-COPY resources/templates/ /srv/templates/
-RUN chmod a+rX /srv/templates && \
-    chown -R $NB_USER:users /srv/templates
 
 # Append tmpnb specific options to the base config
 COPY resources/jupyter_notebook_config.partial.py /tmp/

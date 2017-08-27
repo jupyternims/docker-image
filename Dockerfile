@@ -108,7 +108,7 @@ ENV SAGE_BIN_FILE sage-$SAGE_VER-Ubuntu_16.04-x86_64.tar.bz2
 ENV SAGE_ROOT /opt/sage/$SAGE_VER
 RUN mkdir -p $SAGE_ROOT && chown $NB_USER:users $SAGE_ROOT
 RUN apt-get update \
- && apt-get install -y --no-install-recommends bsdtar
+ && apt-get install -y --no-install-recommends bsdtar \
  && apt-get autoclean \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

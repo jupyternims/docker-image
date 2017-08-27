@@ -14,9 +14,9 @@ RUN apt-get update \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-# git:// blocked by firewall, use https://
-USER $NB_USER
-RUN git config --global url."https://".insteadOf git://
+# If git:// blocked by firewall, use https://
+#USER $NB_USER
+#RUN git config --global url."https://".insteadOf git://
 
 # From jupyter/docker-demo-images
 # Install system libraries first as root
@@ -26,7 +26,7 @@ USER root
 RUN apt-get update && \
     apt-get install -y --no-install-recommends software-properties-common && \
     add-apt-repository -y ppa:hvr/ghc && \
-    sed -i s/jessie/trusty/g /etc/apt/sources.list.d/hvr-ghc-jessie.list && \
+    #sed -i s/jessie/trusty/g /etc/apt/sources.list.d/hvr-ghc-jessie.list && \
     apt-get update && \
     apt-get install -y cabal-install-1.22 ghc-7.8.4 happy-1.19.4 alex-3.1.3 && \
     apt-get clean

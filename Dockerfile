@@ -134,42 +134,9 @@ WORKDIR /home/$NB_USER/work
 RUN ln -s $SAGE_ROOT/local/share/jsmol /opt/conda/lib/python3.6/site-packages/notebook/static/
 ADD ./add_sage/backend_ipython.py $SAGE_ROOT/local/lib/python2.7/site-packages/sage/repl/rich_output/backend_ipython.py
 
-
-USER root
-# Clone featured notebooks before adding local content to avoid recloning
-# everytime something changes locally
-RUN mkdir -p /home/$NB_USER/work/communities && \
-    mkdir -p /home/$NB_USER/work/featured
-RUN git clone --depth 1 https://github.com/jvns/pandas-cookbook.git /home/$NB_USER/work/featured/pandas-cookbook/
-
-# Add local content, starting with notebooks and datasets which are the largest
-# so that later, smaller file changes do not cause a complete recopy during 
-# build
-COPY notebooks/ /home/$NB_USER/work/
-#COPY datasets/ /home/$NB_USER/work/datasets/
-
-# Switch back to root for permission fixes, conversions, and trust. Make sure
-# trust is done as $NB_USER so that the signing secret winds up in the $NB_USER
-# profile, not root's
-USER root
-
-# Convert notebooks to the current format and trust them
-RUN find /home/$NB_USER/work -name '*.ipynb' -exec jupyter nbconvert --to notebook {} --output {} \; && \
-    chown -R $NB_USER:users /home/$NB_USER && \
-    sudo -u $NB_USER env "PATH=$PATH" find /home/$NB_USER/work -name '*.ipynb' -exec jupyter trust {} \;
-
-
 # JupyterLab
 RUN conda remove --quiet --yes --force 'jupyterlab'
 RUN conda install --quiet --yes -c conda-forge jupyterlab && conda clean -tipsy
-
-# Finally, add the site specific tmpnb.org / try.jupyter.org configuration.
-# These should probably be split off into a separate docker image so that others
-# can reuse the very expensive build of all the above with their own site 
-# customization.
-
-# Install our custom.js
-#COPY resources/custom.js /home/$NB_USER/.jupyter/custom/
 
 # Add the templates
 COPY resources/templates/ /srv/templates/

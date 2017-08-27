@@ -1,3 +1,0 @@
-This JupyterHub server is managed by NIMS.
-
-This server will reboot regularly once a week (1:00am to 4:00am on Monday) for package management. At this point, all user calculations are stopped and all environments are initialized. In particular, the data of users outside the '~/work' folder will be lost.

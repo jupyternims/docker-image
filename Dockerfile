@@ -129,10 +129,3 @@ RUN conda install --quiet --yes -c conda-forge jupyterlab && conda clean -tipsy
 COPY resources/jupyter_notebook_config.partial.py /tmp/
 RUN cat /tmp/jupyter_notebook_config.partial.py >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py && \
     rm /tmp/jupyter_notebook_config.partial.py
-
-RUN cp -R /home/$NB_USER/work /srv/work
-COPY docker-entrypoint.sh /srv/docker-entrypoint.sh
-ENTRYPOINT ["tini", "--", "/srv/docker-entrypoint.sh"]
-CMD ["start-notebook.sh"]
-
-USER $NB_USER

@@ -107,11 +107,11 @@ ENV SAGE_VER 8.0
 ENV SAGE_BIN_FILE sage-$SAGE_VER-Ubuntu_16.04-x86_64.tar.bz2
 ENV SAGE_ROOT /opt/sage/$SAGE_VER
 RUN mkdir -p $SAGE_ROOT && chown $NB_USER:users $SAGE_ROOT
+RUN apt-get install -y --no-install-recommends bsdtar
 
 USER $NB_USER
 WORKDIR $SAGE_ROOT
 RUN wget -nv http://mirrors.mit.edu/sage/linux/64bit/$SAGE_BIN_FILE
-RUN apt-get install -y --no-install-recommends bsdtar
 RUN bsdtar -xjf $SAGE_BIN_FILE --strip-components=1
 RUN rm $SAGE_BIN_FILE
 

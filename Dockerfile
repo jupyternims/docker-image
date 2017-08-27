@@ -111,7 +111,8 @@ RUN mkdir -p $SAGE_ROOT && chown $NB_USER:users $SAGE_ROOT
 USER $NB_USER
 WORKDIR $SAGE_ROOT
 RUN wget -nv http://mirrors.mit.edu/sage/linux/64bit/$SAGE_BIN_FILE
-RUN tar -xjf $SAGE_BIN_FILE --strip-components=1
+RUN apt-get install -y --no-install-recommends bsdtar
+RUN bsdtar -xjf $SAGE_BIN_FILE --strip-components=1
 RUN rm $SAGE_BIN_FILE
 
 USER root

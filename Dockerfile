@@ -125,7 +125,10 @@ ADD ./add_sage/backend_ipython.py $SAGE_ROOT/local/lib/python2.7/site-packages/s
 RUN conda remove --quiet --yes --force 'jupyterlab'
 RUN conda install --quiet --yes -c conda-forge jupyterlab && conda clean -tipsy
 
+USER root
 # Append tmpnb specific options to the base config
 COPY resources/jupyter_notebook_config.partial.py /tmp/
 RUN cat /tmp/jupyter_notebook_config.partial.py >> /home/$NB_USER/.jupyter/jupyter_notebook_config.py && \
     rm /tmp/jupyter_notebook_config.partial.py
+
+USER $NB_USER

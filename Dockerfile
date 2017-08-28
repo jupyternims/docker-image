@@ -19,11 +19,11 @@ USER root
 
 # install iruby https://github.com/SciRuby/iruby
 RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends \
+    apt-get install -y \
     libtool libffi-dev make automake \
     libssl-dev libreadline-dev zlib1g-dev \
-    gnuplot-nox libsqlite3-dev libatlas-base-dev libgsl0-dev libmagick++-dev imagemagick \
     git libzmq-dev autoconf pkg-config && \
+#    build-essential git libssl-dev libreadline-dev libffi-dev pkg-config libzmq-dev gnuplot-nox libgsl0-dev libtool autoconf automake zlib1g-dev libsqlite3-dev libmagick++-dev imagemagick libatlas-base-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -52,8 +52,8 @@ USER $NB_USER
 
 RUN ruby-build $RUBY_VERSION $RUBY_DIR
 
-#RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis nyaplot --no-document && \
-RUN gem update --no-document --system && gem install --no-document sciruby-full && \
+RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis nyaplot --no-document && \
+#RUN gem update --no-document --system && gem install --no-document sciruby-full && \
     iruby register --force
 
 

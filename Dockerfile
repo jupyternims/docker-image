@@ -22,6 +22,7 @@ RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
     libtool libffi-dev make automake \
     libssl-dev libreadline-dev zlib1g-dev \
+    gnuplot-nox libsqlite3-dev libatlas-base-dev libgsl0-dev libmagick++-dev imagemagick \
     git libzmq-dev autoconf pkg-config && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

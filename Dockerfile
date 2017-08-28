@@ -18,55 +18,52 @@ RUN apt-get update \
 #USER $NB_USER
 #RUN git config --global url."https://".insteadOf git://
 
-# From jupyter/docker-demo-images
-# Install system libraries first as root
+# IRuby
+# From odk211/iruby-notebook
 USER root
 
-# The Glorious Glasgow Haskell Compiler
-#RUN apt-get update && \
-#    apt-get install -y --no-install-recommends software-properties-common && \
-#    add-apt-repository -y ppa:hvr/ghc && \
-#    #sed -i s/jessie/trusty/g /etc/apt/sources.list.d/hvr-ghc-jessie.list && \
-#    apt-get update && \
-#    apt-get install -y cabal-install-1.22 ghc-7.8.4 happy-1.19.4 alex-3.1.3 && \
-#    apt-get clean
+# install iruby https://github.com/SciRuby/iruby
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
+    libtool libffi-dev make automake \
+    libssl-dev libreadline-dev zlib1g-dev \
+    git libzmq-dev autoconf pkg-config && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# IHaskell dependencies
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends zlib1g-dev libzmq3-dev libtinfo-dev libcairo2-dev libpango1.0-dev && apt-get clean
+RUN git clone https://github.com/zeromq/czmq --depth 1 && \
+    cd czmq && \
+    ./autogen.sh && ./configure && make && make install && \
+    cd .. && \
+    rm -rf ./czmq
 
-# Ruby dependencies
-RUN apt-get install -y --no-install-recommends ruby ruby-dev libtool autoconf automake gnuplot-nox libsqlite3-dev libatlas-base-dev libgsl0-dev libmagick++-dev imagemagick && \
-    ln -s /usr/bin/libtoolize /usr/bin/libtool && \
-    apt-get clean
-# We need to pin activemodel to 4.2 while we have ruby < 2.2
-RUN gem update --system --no-document && \
-    gem install --no-document 'activemodel:~> 4.2' sciruby-full
+# install ruby-build, ruby
+RUN git clone https://github.com/rbenv/ruby-build.git --depth 1 && \
+    cd ruby-build && \
+    ./install.sh && \
+    cd .. && \
+    rm -rf ./ruby-build
 
-# Now switch to $NB_USER for all conda and other package manager installs
+ENV RUBY_VERSION=2.4.1 \
+    RUBY_DIR=/opt/ruby
+
+ENV PATH=$RUBY_DIR/bin:$PATH
+
+RUN mkdir -p $RUBY_DIR && \
+    chown $NB_USER $RUBY_DIR
+
 USER $NB_USER
 
-#ENV PATH /home/$NB_USER/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.4/bin:/opt/alex/3.1.3/bin:$PATH
+RUN ruby-build $RUBY_VERSION $RUBY_DIR
 
-# IRuby
-RUN iruby register
+RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis nyaplot --no-document && \
+    iruby register --force
 
-# IHaskell + IHaskell-Widgets + Dependencies for examples
-#RUN cabal update && \
-#    CURL_CA_BUNDLE='/etc/ssl/certs/ca-certificates.crt' curl 'https://www.stackage.org/lts-2.22/cabal.config?global=true' >> ~/.cabal/config && \
-#    cabal install cpphs && \
-#    cabal install gtk2hs-buildtools && \
-#    cabal install ihaskell-0.8.4.0 --reorder-goals && \
-#    cabal install \
-        # ihaskell-widgets-0.2.3.1 \ temporarily disabled because installation fails
-#        HTTP Chart Chart-cairo && \
-#    ihaskell install && \
-#    rm -fr $(echo ~/.cabal/bin/* | grep -iv ihaskell) ~/.cabal/packages ~/.cabal/share/doc ~/.cabal/setup-exe-cache ~/.cabal/logs
 
-# Extra Kernels
 # Tensorflow
 RUN conda install --quiet --yes -c conda-forge tensorflow
 RUN conda install --quiet --yes -c conda-forge jupyter_contrib_nbextensions
+
 # Octave Kernel
 # From arnau/docker-octave-notebook
 USER root

@@ -9,11 +9,6 @@ USER root
 
 #RUN sed -i 's%archive.ubuntu.com%ftp.daumkakao.com%' /etc/apt/sources.list
 
-RUN apt-get update \
- && apt-get -y dist-upgrade --no-install-recommends \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
-
 # If git:// blocked by firewall, use https://
 #USER $NB_USER
 #RUN git config --global url."https://".insteadOf git://
@@ -56,7 +51,8 @@ USER $NB_USER
 
 RUN ruby-build $RUBY_VERSION $RUBY_DIR
 
-RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis nyaplot --no-document && \
+#RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis nyaplot --no-document && \
+RUN gem update --no-document --system && gem install --no-document sciruby-full && \
     iruby register --force
 
 

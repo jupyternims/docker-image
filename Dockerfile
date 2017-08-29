@@ -1,7 +1,7 @@
 
 # Docker demo image, as used on try.jupyter.org and tmpnb.org
 
-FROM jupyter/datascience-notebook:c8797824e8c0
+FROM jupyter/datascience-notebook:cf6258237ff9
 
 MAINTAINER Byung Chun Kim <wizardbc@gmail.com>
 
@@ -111,10 +111,6 @@ USER $NB_USER
 WORKDIR /home/$NB_USER/work
 RUN ln -s $SAGE_ROOT/local/share/jsmol /opt/conda/lib/python3.6/site-packages/notebook/static/
 ADD ./add_sage/backend_ipython.py $SAGE_ROOT/local/lib/python2.7/site-packages/sage/repl/rich_output/backend_ipython.py
-
-# JupyterLab
-RUN conda remove --quiet --yes --force 'jupyterlab'
-RUN conda install --quiet --yes -c conda-forge jupyterlab && conda clean -tipsy
 
 USER root
 # Append tmpnb specific options to the base config

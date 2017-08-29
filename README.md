@@ -17,10 +17,14 @@ This project is supported by [NIMS](https://www.nims.re.kr).
 
 ## Basic Use
 
+It is about 6GB docker image and the tag is parallel to the tag of `jupyter/docker-stacks`.
+```
+docker pull jupyternims/docker-image:cf6258237ff9
+```
 The following command starts a container with the Notebook server listening for HTTP connections on port 8888 with a randomly generated authentication token configured.
 
 ```
-docker run -it --rm -p 8888:8888 jupyternims/docker-image
+docker run -it --rm -p 8888:8888 jupyternims/docker-image:cf6258237ff9
 ```
 
 Take note of the authentication token included in the notebook startup log messages. Include it in the URL you visit to access the Notebook server or enter it in the Notebook login form.
@@ -41,7 +45,7 @@ So, if something is wrong, just stop and restart your notebook server in `Contro
 
 ## JupyterLab
 
-Now jupyter/docker-stacks support latest version of [JupyterLab](http://jupyterlab-tutorial.readthedocs.io/).
+Now `jupyter/docker-stacks` support the latest version of [JupyterLab](http://jupyterlab-tutorial.readthedocs.io/).
 
 You can try on
 ```

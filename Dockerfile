@@ -58,9 +58,10 @@ RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis ny
 
 # brendan-rius/jupyter-c-kernel
 RUN git clone https://github.com/brendan-rius/jupyter-c-kernel.git && \
-    pip install --no-cache-dir -e jupyter-c-kernel/ && \
-    cd jupyter-c-kernel && install_c_kernel --user && \
-    cd .. && rm -rf jupyter-c-kernel
+    mv jupyter-c-kernel/ jupyter_c_kernel/ && \
+    pip install --no-cache-dir -e jupyter_c_kernel/ && \
+    cd jupyter_c_kernel && install_c_kernel --user && \
+    cd .. && rm -rf jupyter_c_kernel
 
 # Tensorflow
 RUN conda install --quiet --yes -c conda-forge tensorflow

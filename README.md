@@ -7,9 +7,8 @@ This project is supported by [NIMS](https://www.nims.re.kr).
 ## What it Gives You
 
 * Everything in [Data Science Notebook](https://github.com/jupyter/docker-stacks/tree/master/datascience-notebook)
-* IRuby (from [jupyter/docker-stacks](https://github.com/jupyter/docker-stacks))
+* IRuby (from [odk211/iruby-notebook](https://hub.docker.com/r/odk211/iruby-notebook/))
 * Tensorflow (without GPU support)
-* jupyter C kernel
 * Octave kernel
 * [SageMath](http://www.sagemath.org)
 * JupyterLab

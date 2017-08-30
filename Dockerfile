@@ -55,11 +55,12 @@ RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis ny
     iruby register --force
 
 # brendan-rius/jupyter-c-kernel
+WORKDIR /home/$NB_USER/.local/
 RUN git clone https://github.com/brendan-rius/jupyter-c-kernel.git && \
     mv jupyter-c-kernel/ jupyter_c_kernel/ && \
     pip install --no-cache-dir -e jupyter_c_kernel/ && \
-    cd jupyter_c_kernel && install_c_kernel --user && \
-    cd .. && rm -rf jupyter_c_kernel
+    cd jupyter_c_kernel && install_c_kernel --user
+WORKDIR /home/$NB_USER/
 
 # Tensorflow
 RUN conda install --quiet --yes -c conda-forge tensorflow
@@ -112,7 +113,7 @@ WORKDIR /usr/local/share/jupyter/kernels/
 RUN ln -s  $SAGE_ROOT/local/share/jupyter/kernels/sagemath/ ./
 
 USER $NB_USER
-WORKDIR /home/$NB_USER/work
+WORKDIR /home/$NB_USER/work/
 RUN ln -s $SAGE_ROOT/local/share/jsmol /opt/conda/lib/python3.6/site-packages/notebook/static/
 ADD ./add_sage/backend_ipython.py $SAGE_ROOT/local/lib/python2.7/site-packages/sage/repl/rich_output/backend_ipython.py
 

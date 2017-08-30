@@ -17,7 +17,7 @@ This project is supported by [NIMS](https://www.nims.re.kr).
 
 ## Basic Use
 
-It is about 6GB docker image and the tag is parallel to the tag of `jupyter/docker-stacks`.
+It is about 4GB docker image and the tag is parallel to the tag of `jupyter/docker-stacks`.
 ```
 docker pull jupyternims/docker-image:cf6258237ff9
 ```

@@ -55,6 +55,7 @@ RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis ny
     iruby register --force
 
 # brendan-rius/jupyter-c-kernel
+RUN mkdir -p /home/$NB_USER/.local/
 WORKDIR /home/$NB_USER/.local/
 RUN git clone https://github.com/brendan-rius/jupyter-c-kernel.git && \
     mv jupyter-c-kernel/ jupyter_c_kernel/ && \

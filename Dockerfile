@@ -7,9 +7,10 @@ MAINTAINER Byung Chun Kim <wizardbc@gmail.com>
 
 USER root
 
-#RUN sed -i 's%archive.ubuntu.com%ftp.daumkakao.com%' /etc/apt/sources.list
+RUN sed -i 's%archive.ubuntu.com%ftp.daumkakao.com%' /etc/apt/sources.list
 
 # If git:// blocked by firewall, use https://
+#RUN git config --global url."https://".insteadOf git://
 #USER $NB_USER
 #RUN git config --global url."https://".insteadOf git://
 
@@ -99,7 +100,7 @@ RUN apt-get update -qq && \
 
 USER $NB_USER
 WORKDIR $SAGE_ROOT
-RUN wget -nv http://mirrors.mit.edu/sage/linux/64bit/$SAGE_BIN_FILE && \
+RUN wget -nv https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/$SAGE_BIN_FILE && \
     bsdtar -xjf $SAGE_BIN_FILE --strip-components=1 && \
     rm $SAGE_BIN_FILE
 

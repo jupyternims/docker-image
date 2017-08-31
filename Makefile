@@ -9,6 +9,7 @@ refresh:
 	-docker pull $(REPO):latest
 
 build:
+	sed -i '/^FROM/c\FROM jupyter\/datascience-notebook:$(TAG)' Dockerfile
 	docker build --force-rm -t $(REPO):latest .
 
 tag:

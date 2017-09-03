@@ -55,7 +55,7 @@ This is a very early pre-alpha developer preview and not suitable for general us
 
 ## Notice of Shutdown
 
-[jupyter.nims.re.kr](https://jupyter.nims.re.kr) will reboot regularly once a week (1:00am to 4:00am on Monday) for package management.
+[jupyter.nims.re.kr](https://jupyter.nims.re.kr) will reboot regularly once a week (1:00am to 4:00am on Monday, KST) for package management.
 
 At this point, all user calculations are stopped and all environments are initialized.
 

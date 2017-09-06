@@ -53,15 +53,15 @@ USER $NB_USER
 RUN ruby-build $RUBY_VERSION $RUBY_DIR
 
 RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis nyaplot --no-document && \
-    iruby register --force
+    iruby register --force && \
+    fix-permissions $RUBY_DIR
 
 # brendan-rius/jupyter-c-kernel
-RUN mkdir -p /home/$NB_USER/.local/
-WORKDIR /home/$NB_USER/.local/
+WORKDIR /opt/
 RUN git clone https://github.com/brendan-rius/jupyter-c-kernel.git && \
-    mv jupyter-c-kernel/ jupyter_c_kernel/ && \
-    pip install --no-cache-dir -e jupyter_c_kernel/ && \
-    cd jupyter_c_kernel && install_c_kernel --user
+    pip install --no-cache-dir -e jupyter-c-kernel/ && \
+    cd jupyter-c-kernel && install_c_kernel --user && \
+    fix-permissions /opt/jupyter-c-kernel
 WORKDIR /home/$NB_USER/
 
 # Tensorflow

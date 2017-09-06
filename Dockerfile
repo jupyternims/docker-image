@@ -57,7 +57,10 @@ RUN gem install bundler cztop iruby pry pry-doc awesome_print gnuplot rubyvis ny
     fix-permissions $RUBY_DIR
 
 # brendan-rius/jupyter-c-kernel
+USER root
 WORKDIR /opt/
+RUN mkdir -p jupyter-c-kernel && chown -R $NB_USER jupyter-c-kernel
+USER $NB_USER
 RUN git clone https://github.com/brendan-rius/jupyter-c-kernel.git && \
     pip install --no-cache-dir -e jupyter-c-kernel/ && \
     cd jupyter-c-kernel && install_c_kernel --user && \

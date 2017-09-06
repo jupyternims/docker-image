@@ -19,12 +19,12 @@ This project is supported by [NIMS](https://www.nims.re.kr).
 
 It is about 14GB docker image and the tag is parallel to the tag of `jupyter/docker-stacks`.
 ```
-docker pull jupyternims/docker-image:cf6258237ff9
+docker pull jupyternims/docker-image:c64b1e33ae52
 ```
 The following command starts a container with the Notebook server listening for HTTP connections on port 8888 with a randomly generated authentication token configured.
 
 ```
-docker run -it --rm -p 8888:8888 jupyternims/docker-image:cf6258237ff9
+docker run -it --rm -p 8888:8888 jupyternims/docker-image:c64b1e33ae52
 ```
 
 Take note of the authentication token included in the notebook startup log messages. Include it in the URL you visit to access the Notebook server or enter it in the Notebook login form.

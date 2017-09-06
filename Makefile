@@ -13,13 +13,13 @@ build:
 	docker build --force-rm -t $(REPO):latest .
 
 dev: build
-	docker run --rm -it -p 8888:8888 jupyternims/docker-image:$(TAG)
+	docker run --rm -it -p 8888:8888 jupyternims/docker-image:latest
 
 tag:
 	docker tag $(REPO):latest $(REPO):$(TAG)
 
-push:
+push: tag
 	docker push $(REPO):latest
 	docker push $(REPO):$(TAG)
 
-release: refresh build tag push
+release: refresh build push

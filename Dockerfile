@@ -65,8 +65,16 @@ RUN git clone https://github.com/brendan-rius/jupyter-c-kernel.git && \
 WORKDIR /home/$NB_USER/
 
 # Tensorflow
-RUN conda install --quiet --yes -c conda-forge tensorflow
-RUN conda install --quiet --yes -c conda-forge jupyter_contrib_nbextensions
+RUN conda install --quiet --yes \
+    'tensorflow=1.3*' \
+    'keras=2.0*' && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
+
+# nbextensions
+RUN conda install --quiet --yes -c conda-forge jupyter_contrib_nbextensions && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
 
 # Octave Kernel
 # From arnau/docker-octave-notebook
@@ -82,7 +90,9 @@ USER $NB_USER
 #jupyter nbextension enable --py --sys-prefix widgetsnbextension
 RUN pip install octave_kernel && \
     python -m octave_kernel.install && \
-    conda install -y ipywidgets
+    conda install -y ipywidgets && \
+    conda clean -tipsy && \
+    fix-permissions $CONDA_DIR
 
 
 ### Install Sage
@@ -102,6 +112,7 @@ USER $NB_USER
 WORKDIR $SAGE_ROOT
 RUN wget -nv https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/$SAGE_BIN_FILE && \
     bsdtar -xjf $SAGE_BIN_FILE --strip-components=1 && \
+    fix-permissions $SAGE_ROOT && \
     rm $SAGE_BIN_FILE
 
 USER root

@@ -1,6 +1,6 @@
 .PHONY: all release
 
-TAG?=c64b1e33ae52
+TAG?=03398900b724
 REPO:=jupyternims/docker-image
 
 all: release
@@ -23,3 +23,6 @@ push: tag
 	docker push $(REPO):$(TAG)
 
 release: refresh build push
+	git add .
+	git commit -m 'bump to $(TAG)'
+	git push

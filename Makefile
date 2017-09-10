@@ -1,6 +1,6 @@
 .PHONY: all release
 
-TAG?=03398900b724
+TAG?=ae885c0a6226
 REPO:=jupyternims/docker-image
 
 all: release

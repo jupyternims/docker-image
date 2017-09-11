@@ -23,6 +23,6 @@ push: tag
 	docker push $(REPO):$(TAG)
 
 release: refresh build push
-	git add .
-	git commit -m 'bump to $(TAG)'
-	git push
+	-git add .
+	-git commit -m 'bump to $(TAG)'
+	-git push

@@ -1,28 +1,28 @@
 .PHONY: all release
 
-TAG?=ae885c0a6226
+TAG?=281505737f8a
 REPO:=jupyternims/docker-image
 
-all: release
+all: refresh build push
 
 refresh:
 	-docker pull $(REPO):latest
 
-build:
+build: refresh
 	sed -i '/^FROM/c\FROM jupyter\/datascience-notebook:$(TAG)' Dockerfile
 	docker build --force-rm -t $(REPO):latest .
 
 dev: build
 	docker run --rm -it -p 8888:8888 jupyternims/docker-image:latest
 
-tag:
+tag: build
 	docker tag $(REPO):latest $(REPO):$(TAG)
 
 push: tag
 	docker push $(REPO):latest
 	docker push $(REPO):$(TAG)
 
-release: refresh build push
-	-git add .
-	-git commit -m 'bump to $(TAG)'
-	-git push
+git_push: push
+	git add .
+	git commit -m 'bump to $(TAG)'
+	git push

@@ -1,7 +1,7 @@
 
 # Docker demo image, as used on try.jupyter.org and tmpnb.org
 
-FROM jupyter/datascience-notebook:281505737f8a
+FROM jupyter/datascience-notebook:9e9dea89d68c
 
 MAINTAINER Byung Chun Kim <wizardbc@gmail.com>
 
@@ -75,7 +75,7 @@ RUN conda install --quiet --yes \
     fix-permissions $CONDA_DIR
 
 # nbextensions
-RUN conda install --quiet --yes -c conda-forge jupyter_contrib_nbextensions && \
+RUN conda install --quiet --yes -c conda-forge 'jupyter_contrib_nbextensions' 'icu=58.*' && \
     conda clean -tipsy && \
     fix-permissions $CONDA_DIR
 

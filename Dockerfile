@@ -1,7 +1,7 @@
 
 # Docker demo image, as used on try.jupyter.org and tmpnb.org
 
-FROM jupyter/datascience-notebook:9e9dea89d68c
+FROM jupyter/datascience-notebook:417e06bfc446
 
 MAINTAINER Byung Chun Kim <wizardbc@gmail.com>
 
@@ -103,6 +103,7 @@ RUN pip install octave_kernel && \
 USER root
 ENV SAGE_VER 8.0
 ENV SAGE_BIN_FILE sage-$SAGE_VER-Ubuntu_16.04-x86_64.tar.bz2
+ENV SAGE_MIRROR http://ftp.kaist.ac.kr/sage/linux/64bit/
 ENV SAGE_ROOT /opt/sage/$SAGE_VER
 RUN mkdir -p $SAGE_ROOT && chown $NB_USER:users $SAGE_ROOT
 RUN apt-get update -qq && \
@@ -113,7 +114,7 @@ RUN apt-get update -qq && \
 
 USER $NB_USER
 WORKDIR $SAGE_ROOT
-RUN wget -nv https://mirrors.tuna.tsinghua.edu.cn/sagemath/linux/64bit/$SAGE_BIN_FILE && \
+RUN curl -v --user-agent "" -J -O $SAGE_MIRROR$SAGE_BIN_FILE && \
     bsdtar -xjf $SAGE_BIN_FILE --strip-components=1 && \
     fix-permissions $SAGE_ROOT && \
     rm $SAGE_BIN_FILE

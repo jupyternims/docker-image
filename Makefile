@@ -1,6 +1,6 @@
 .PHONY: all release
 
-TAG?=e89b2fe9974b
+TAG?=c7fb6660d096
 REPO:=jupyternims/docker-image
 
 all: refresh build push

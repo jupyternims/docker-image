@@ -1,7 +1,7 @@
 
 # Docker demo image, as used on try.jupyter.org and tmpnb.org
 
-FROM jupyter/datascience-notebook:c7fb6660d096
+FROM jupyter/datascience-notebook:db3ee82ad08a
 
 MAINTAINER Byung Chun Kim <wizardbc@gmail.com>
 
